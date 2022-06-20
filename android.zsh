@@ -1,3 +1,4 @@
+# Turn on/off mobile data
 function adbdata() {
   if [[ $1 == "on" ]]; then
     command=enable
@@ -7,6 +8,7 @@ function adbdata() {
   adb shell svc data $command
 }
 
+# Turn on/off wi-fi
 function adbwifi() {
   if [[ $1 == "on" ]]; then
     command=enable
@@ -16,6 +18,7 @@ function adbwifi() {
   adb shell svc wifi $command
 }
 
+# Show/hide touches
 function adbtaps() {
   if [[ $1 == "on" ]]; then
     command=1
@@ -25,6 +28,13 @@ function adbtaps() {
   adb shell content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:$command
 }
 
+# Prepare the device for demo mode:
+#   - hides notifications from the status bar
+#   - sets the clock to always be 9:00
+#   - sets wi-fi and mobile data to the maximum signal
+#   - sets the battery as not charging and 100%
+#
+# Useful for live demos and screenshots
 function adbdemo() {
   if [[ $1 == "on" ]]; then
     adb shell settings put global sysui_demo_allowed 1
@@ -38,6 +48,7 @@ function adbdemo() {
   fi
 }
 
+# Wake up proxy by turning off and on wi-fi and mobile data
 function adbproxy() {
   adbwifi off
   adbdata off
@@ -46,6 +57,7 @@ function adbproxy() {
   adbdata on
 }
 
+# Copy to clipboard a string resource from a dot-separated string key
 function strkey() {
   key=$(echo $1 | tr . _)
   echo "<string name=\"${key}_key\">${1}</string>" | pbcopy
