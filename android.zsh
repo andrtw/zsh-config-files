@@ -62,3 +62,16 @@ function strkey() {
   key=$(echo $1 | tr . _)
   echo "<string name=\"${key}_key\">${1}</string>" | pbcopy
 }
+
+# Turn on/off system animations
+# Useful to avoid flaky UI tests
+function adbanim() {
+  if [[ $1 == "on" ]]; then
+    command=1
+  else
+    command=0
+  fi
+  adb shell settings put global window_animation_scale $command
+  adb shell settings put global transition_animation_scale $command
+  adb shell settings put global animator_duration_scale $command
+}
